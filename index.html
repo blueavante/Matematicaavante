@@ -1,1 +1,582 @@
-h
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática Avante | Gestão & Gamificação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Paleta Azul Profissional - Modo Claro */
+            --bg-body: #f4f7fa;
+            --bg-card: #ffffff;
+            --text-main: #0a192f;
+            --text-secondary: #4a5568;
+            --primary-blue: #0052cc;
+            --light-blue: #e6f0ff;
+            --dark-blue: #071d49;
+            --accent-gold: #ffcc00;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 82, 204, 0.05);
+        }
+
+        .dark-mode {
+            /* Paleta Azul Profissional - Modo Escuro */
+            --bg-body: #0a1128;
+            --bg-card: #101f42;
+            --text-main: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --primary-blue: #38bdf8;
+            --light-blue: #1e293b;
+            --dark-blue: #000814;
+            --accent-gold: #fbbf24;
+            --border-color: #1e293b;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; font-weight: 600; }
+
+        /* --- TOPO --- */
+        .glass-header {
+            background: var(--bg-card);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 700; 
+            color: var(--primary-blue); 
+            font-size: 1.4rem; 
+        }
+
+        .btn-icon {
+            background: var(--light-blue);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            display: grid; 
+            place-items: center;
+        }
+
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
+
+        /* --- TELA DE LOGIN --- */
+        #login-screen {
+            height: 75vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group { margin-bottom: 1.25rem; text-align: left; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-body);
+            color: var(--text-main);
+            outline: none;
+            font-size: 1rem;
+        }
+        input:focus, select:focus { border-color: var(--primary-blue); }
+
+        .btn-main {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, filter 0.2s;
+            font-size: 1rem;
+        }
+        .btn-main:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+        /* --- LAYOUT DO PAINEL --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2rem;
+        }
+
+        .profile-sidebar {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .avatar-circle {
+            width: 90px; height: 90px;
+            background: var(--light-blue);
+            border: 3px solid var(--primary-blue);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: grid; place-items: center;
+            font-size: 2.5rem;
+        }
+
+        .nav-menu { margin-top: 1.5rem; list-style: none; }
+        .nav-item {
+            padding: 12px 15px;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+        .nav-item:hover, .nav-item.active { background: var(--light-blue); color: var(--primary-blue); }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- ESTANTE DE MEDALHAS --- */
+        .medal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .medal-box {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            opacity: 0.3;
+            filter: grayscale(1);
+            transition: all 0.3s;
+        }
+        .medal-box.unlocked { 
+            opacity: 1; 
+            filter: grayscale(0); 
+            border-color: var(--accent-gold);
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(255, 204, 0, 0.15);
+        }
+        .medal-icon { font-size: 2.5rem; display: block; margin-bottom: 5px; }
+
+        /* --- CERTIFICADOS --- */
+        .cert-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .cert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: var(--bg-body);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .cert-item.locked { opacity: 0.6; }
+
+        .hidden { display: none !important; }
+
+        .admin-badge {
+            background: #ef4444; color: white;
+            padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;
+            font-weight: bold; margin-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="glass-header">
+        <div class="logo">✨ Matemática Avante</div>
+        <div>
+            <button class="btn-icon" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section id="login-screen">
+            <div class="login-card">
+                <h2 style="margin-bottom: 0.5rem;">Olá! ⭐</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Identifique-se para carregar seu progresso</p>
+                
+                <div class="input-group">
+                    <label>Seu Nome Completo</label>
+                    <input type="text" id="user-name" placeholder="Ex: Kailane Souza">
+                </div>
+
+                <div class="input-group">
+                    <label>Tipo de Conta</label>
+                    <select id="user-role" onchange="toggleAdminPassword()">
+                        <option value="student">Aluno(a) 🎓</option>
+                        <option value="admin">Administrador(a) / Professor(a) 👑</option>
+                    </select>
+                </div>
+
+                <div class="input-group hidden" id="admin-pass-field">
+                    <label>Senha de Acesso Restrito</label>
+                    <input type="password" id="admin-password" placeholder="Digite a chave mestre">
+                </div>
+
+                <button class="btn-main" onclick="handleAuth()">Entrar no Portal</button>
+            </div>
+        </section>
+
+        <section id="dashboard" class="hidden">
+            <div class="dashboard-grid">
+                
+                <aside class="profile-sidebar">
+                    <div class="avatar-circle" id="user-avatar">👤</div>
+                    <h3 id="display-name" style="word-break: break-word;">Nome</h3>
+                    <p id="display-role" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 3px;">Aluno</p>
+                    
+                    <div style="margin-top: 1.25rem; background: var(--light-blue); border-radius: 12px; padding: 8px;">
+                        <span id="display-points" style="font-weight: 700; color: var(--primary-blue);">⭐ 0 Pontos</span>
+                    </div>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i> Início</li>
+                        <li class="nav-item" onclick="switchTab('medals')"><i class="fas fa-medal"></i> Minhas Medalhas</li>
+                        <li class="nav-item" onclick="switchTab('certs')"><i class="fas fa-certificate"></i> Certificados</li>
+                        <li id="admin-tab" class="nav-item hidden" onclick="switchTab('admin')"><i class="fas fa-user-shield"></i> Painel Geral</li>
+                        <li class="nav-item" onclick="logout()" style="color: #ef4444; margin-top: 1.5rem;"><i class="fas fa-sign-out-alt"></i> Sair</li>
+                    </ul>
+                </aside>
+
+                <main id="main-content">
+                    
+                    <div id="tab-home" class="tab-content">
+                        <div class="card">
+                            <h2>Excelente ter você de volta, <span id="welcome-name">Estudante</span>! 🚀</h2>
+                            <p style="margin: 1rem 0; color: var(--text-secondary);">Seu histórico foi carregado. Continue resolvendo exercícios para subir no ranking e liberar novos prêmios.</p>
+                            <div style="height: 10px; background: var(--light-blue); border-radius: 5px; overflow: hidden;">
+                                <div id="progress-bar" style="width: 0%; height: 100%; background: var(--primary-blue); transition: width 0.5s;"></div>
+                            </div>
+                            <small style="display: block; margin-top: 8px; font-weight: bold;" id="progress-text">Progresso Geral: 0%</small>
+                        </div>
+
+                        <div class="card">
+                            <h3>🎯 Próxima Missão Prática</h3>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">Módulo: Desafios de Lógica e Aritmética Aplicada</p>
+                            <div style="margin-top: 1.5rem; padding: 15px; background: var(--bg-body); border-left: 4px solid var(--primary-blue); border-radius: 4px;">
+                                <p style="font-weight: bold;">Questão do dia: Uma empresa aumentou suas vendas em 20% no primeiro mês e 10% no segundo mês sobre o novo valor. Qual foi o aumento acumulado?</p>
+                            </div>
+                            <button class="btn-main" style="margin-top: 1.5rem; width: auto;" onclick="simulatePractice(25)">Simular Acerto Prático (+25 ⭐)</button>
+                        </div>
+                    </div>
+
+                    <div id="tab-medals" class="tab-content hidden">
+                        <div class="card">
+                            <h2>Estante de Conquistas Reais 🏆</h2>
+                            <p style="color: var(--text-secondary);">Suas insígnias virtuais baseadas no seu rendimento acadêmico:</p>
+                            
+                            <div class="medal-grid">
+                                <div class="medal-box" id="medal-welcome">
+                                    <span class="medal-icon">🥇</span>
+                                    <strong style="font-size: 0.85rem; display:block;">Primeiro Passo</strong>
+                                    <small style="font-size: 0.75rem; color: var(--text-secondary);">Fazer cadastro</small>
+                                </div>
+                                <div class="medal-box" id="medal-bronze">
+                                    <span class="medal-icon">🥉</span>
+                                    <strong style="font-size: 0.85rem; display:block;">Bronze Guardião</strong>
+                                    <small style="font-size: 0.75rem; color: var(--text-secondary);">Alcançar 50 pts</small>
+                                </div>
+                                <div class="medal-box" id="medal-silver">
+                                    <span class="medal-icon">🥈</span>
+                                    <strong style="font-size: 0.85rem; display:block;">Prata Avançado</strong>
+                                    <small style="font-size: 0.75rem; color: var(--text-secondary);">Alcançar 100 pts</small>
+                                </div>
+                                <div class="medal-box" id="medal-gold">
+                                    <span class="medal-icon">👑</span>
+                                    <strong style="font-size: 0.85rem; display:block;">Mestre Ouro</strong>
+                                    <small style="font-size: 0.75rem; color: var(--text-secondary);">Alcançar 200 pts</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-certs" class="tab-content hidden">
+                        <div class="card">
+                            <h2>Certificações Acadêmicas Emitidas 🎓</h2>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Documentos oficiais de validação de competência interna:</p>
+                            
+                            <div class="cert-container">
+                                <div class="cert-item locked" id="cert-1">
+                                    <div>
+                                        <h4 id="cert-title-1">🔒 Certificado de Iniciação Científica (Básico)</h4>
+                                        <small style="color: var(--text-secondary);" id="cert-desc-1">Requisito: Mínimo de 50 pontos obtidos.</small>
+                                    </div>
+                                    <button class="btn-main" style="width: auto; padding: 8px 16px;" id="cert-btn-1" disabled onclick="downloadCert('Iniciação Científica')">Bloqueado</button>
+                                </div>
+
+                                <div class="cert-item locked" id="cert-2">
+                                    <div>
+                                        <h4 id="cert-title-2">🔒 Certificado de Alta Performance (Mestre)</h4>
+                                        <small style="color: var(--text-secondary);" id="cert-desc-2">Requisito: Mínimo de 150 pontos obtidos.</small>
+                                    </div>
+                                    <button class="btn-main" style="width: auto; padding: 8px 16px;" id="cert-btn-2" disabled onclick="downloadCert('Alta Performance')">Bloqueado</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-admin" class="tab-content hidden">
+                        <div class="card">
+                            <h2>Painel de Controle do Gestor 👑</h2>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Visão analítica de usuários registrados localmente na aplicação.</p>
+                            
+                            <div style="background: var(--bg-body); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color);">
+                                <h4 style="margin-bottom: 1rem;">Métricas de Usuários Autenticados:</h4>
+                                <div id="admin-user-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Banco de dados simulado no LocalStorage
+        let appDatabase = JSON.parse(localStorage.getItem('matavante_db')) || {};
+        let activeSession = null;
+
+        // Gerenciamento de Senha do Admin
+        function toggleAdminPassword() {
+            const role = document.getElementById('user-role').value;
+            const field = document.getElementById('admin-pass-field');
+            if (role === 'admin') {
+                field.classList.remove('hidden');
+            } else {
+                field.classList.add('hidden');
+            }
+        }
+
+        // Fluxo de Autenticação com Identificação por Nome e Senha Admin
+        function handleAuth() {
+            const nameInput = document.getElementById('user-name').value.trim();
+            const roleInput = document.getElementById('user-role').value;
+            const passwordInput = document.getElementById('admin-password').value;
+
+            if (!nameInput) {
+                alert("⚠️ Por favor, preencha o campo de nome.");
+                return;
+            }
+
+            // Se for admin, exige a senha correta definida pelo usuário
+            if (roleInput === 'admin') {
+                if (passwordInput !== 'Kailane') {
+                    alert("❌ Senha incorreta! Apenas administradores autorizados possuem acesso.");
+                    return;
+                }
+            }
+
+            // Se o usuário não existir no banco local, criamos um registro limpo
+            if (!appDatabase[nameInput]) {
+                appDatabase[nameInput] = {
+                    name: nameInput,
+                    role: roleInput,
+                    points: 0,
+                    history: []
+                };
+            } else {
+                // Se já existir, garante que mantém o cargo selecionado ou atualiza
+                appDatabase[nameInput].role = roleInput;
+            }
+
+            activeSession = appDatabase[nameInput];
+            saveState();
+            loadDashboard();
+        }
+
+        // Renderização dos Dados na Tela do Aluno/Admin
+        function loadDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+
+            document.getElementById('display-name').innerText = activeSession.name;
+            document.getElementById('welcome-name').innerText = activeSession.name;
+            
+            updateVisualPoints();
+
+            if (activeSession.role === 'admin') {
+                document.getElementById('display-role').innerHTML = `Administrador <span class="admin-badge">STAFF</span>`;
+                document.getElementById('admin-tab').classList.remove('hidden');
+                document.getElementById('user-avatar').innerText = "👑";
+                renderAdminView();
+            } else {
+                document.getElementById('display-role').innerText = `Aluno Oficial`;
+                document.getElementById('admin-tab').classList.add('hidden');
+                document.getElementById('user-avatar').innerText = "🎓";
+            }
+        }
+
+        // Atualização Dinâmica de Pontos, Medalhas e Certificados
+        function updateVisualPoints() {
+            const points = activeSession.points;
+            document.getElementById('display-points').innerText = `⭐ ${points} Pontos`;
+
+            // Lógica de Desbloqueio de Medalhas por Pontuação
+            document.getElementById('medal-welcome').classList.add('unlocked'); // Ganha ao logar
+            
+            if (points >= 50) document.getElementById('medal-bronze').classList.add('unlocked');
+            else document.getElementById('medal-bronze').classList.remove('unlocked');
+
+            if (points >= 100) document.getElementById('medal-silver').classList.add('unlocked');
+            else document.getElementById('medal-silver').classList.remove('unlocked');
+
+            if (points >= 200) document.getElementById('medal-gold').classList.add('unlocked');
+            else document.getElementById('medal-gold').classList.remove('unlocked');
+
+            // Lógica de Desbloqueio de Certificados
+            updateCertificateUI(1, points >= 50);
+            updateCertificateUI(2, points >= 150);
+
+            // Barra de Progresso Visual (Até 200 pontos para completar a trilha)
+            const percentage = Math.min(Math.round((points / 200) * 100), 100);
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `Progresso Geral: ${percentage}%`;
+        }
+
+        function updateCertificateUI(id, isUnlocked) {
+            const card = document.getElementById(`cert-${id}`);
+            const title = document.getElementById(`cert-title-${id}`);
+            const btn = document.getElementById(`cert-btn-${id}`);
+
+            if (isUnlocked) {
+                card.classList.remove('locked');
+                title.innerText = title.innerText.replace('🔒', '🎓');
+                btn.removeAttribute('disabled');
+                btn.innerText = "Emitir PDF";
+                btn.style.background = "var(--accent-gold)";
+                btn.style.color = "#000";
+            } else {
+                card.classList.add('locked');
+                if(!title.innerText.includes('🔒')) title.innerText = '🔒 ' + title.innerText;
+                btn.setAttribute('disabled', 'true');
+                btn.innerText = "Bloqueado";
+                btn.style.background = "var(--primary-blue)";
+                btn.style.color = "#fff";
+            }
+        }
+
+        function simulatePractice(value) {
+            activeSession.points += value;
+            saveState();
+            updateVisualPoints();
+        }
+
+        function downloadCert(name) {
+            alert(`📜 Certificado de ${name} gerado para ${activeSession.name} com sucesso! Pronto para impressão.`);
+        }
+
+        // Alternador de Temas (Claro e Escuro)
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#theme-btn i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        // Alternar Abas do Painel Lateral
+        function switchTab(target) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${target}`).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Monitor do Administrador
+        function renderAdminView() {
+            const container = document.getElementById('admin-user-list');
+            container.innerHTML = '';
+            
+            Object.keys(appDatabase).forEach(key => {
+                const user = appDatabase[key];
+                container.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color);">
+                        <span>👤 <strong>${user.name}</strong> (${user.role === 'admin' ? 'Gestor' : 'Aluno'})</span>
+                        <span style="color: var(--primary-blue); font-weight: bold;">${user.points} ⭐</span>
+                    </div>
+                `;
+            });
+        }
+
+        function saveState() {
+            appDatabase[activeSession.name] = activeSession;
+            localStorage.setItem('matavante_db', JSON.stringify(appDatabase));
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
